@@ -1,0 +1,74 @@
+version: '3'
+services:
+
+  #php service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # image: digitalocean.com/php
+    container_name: app-ddd
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app-ddd
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - ddd-network
+
+  #Nginx Service
+  webserver:
+    image: nginx:alpine
+    container_name: webserver-ddd
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - ddd-network
+
+  db:
+    image: postgres:12.8-alpine
+    container_name: db-ddd
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ddd_laravel
+      PGDATA: /tmp
+    volumes:
+      - ./data/dbdata:/var/lib/postgresql/data
+    networks:
+      - ddd-network
+
+  # redis:
+  #   image: redis:alpine
+  #   container_name: app-redis
+  #   command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
+  #   volumes:
+  #     - ./data/redis:/data
+  #   ports:
+  #     - "8002:6379"
+  #   networks:
+  #     - ddd-network
+
+#Docker Networks
+networks:
+  ddd-network:
+    driver: bridge
+
+#Volumes
+volumes:
+  dbdata:
+    driver: local
