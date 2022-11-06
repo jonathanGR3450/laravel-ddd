@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Shared\ValueObjects;
 
-use InvalidArgumentException;
+use App\Domain\Shared\Exception\InvalidArgumentException;
 use Stringable;
 use Symfony\Component\Uid\Ulid;
 
