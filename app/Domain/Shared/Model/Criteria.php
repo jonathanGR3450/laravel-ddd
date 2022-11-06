@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\Shared\Model;
 
-use CriteriaPagination;
-
 abstract class Criteria
 {
     private ?CriteriaPagination $pagination;
     private ?CriteriaSort $sort;
-    
-    protected function __construct(?CriteriaPagination $pagination, ?CriteriaSort $sort) {
+
+    protected function __construct(?CriteriaPagination $pagination = null, ?CriteriaSort $sort = null)
+    {
         $this->pagination = $pagination;
         $this->sort = $sort;
     }

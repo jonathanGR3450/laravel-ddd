@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace App\Domain\Shared\Model;
+
 use App\Domain\Shared\Model\Pagination\Limit;
 use App\Domain\Shared\Model\Pagination\Offset;
 use App\Domain\Shared\ValueObjects\IntegerValueObject;
