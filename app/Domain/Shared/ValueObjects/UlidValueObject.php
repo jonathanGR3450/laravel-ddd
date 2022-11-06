@@ -12,7 +12,7 @@ class UlidValueObject implements Stringable, UlidInterface
 {
     private string $value;
 
-    public function __construct(string $value)
+    private function __construct(string $value)
     {
         $this->guard($value);
         $this->value = $value;

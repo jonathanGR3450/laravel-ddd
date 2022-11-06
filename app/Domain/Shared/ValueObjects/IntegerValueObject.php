@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace App\Domain\Shared\ValueObjects;
+
 class IntegerValueObject
 {
     protected int $value;
