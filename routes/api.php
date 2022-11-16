@@ -18,4 +18,5 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::resource('users', 'UserController');
+// Route::resource('users', 'UserController');
+Route::post('users', 'CreateUserController');

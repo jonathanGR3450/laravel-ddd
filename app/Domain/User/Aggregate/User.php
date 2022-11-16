@@ -8,6 +8,7 @@ use App\Domain\Shared\ValueObjects\DateTimeValueObject;
 use App\Domain\Shared\ValueObjects\StringValueObject;
 use App\Domain\User\ValueObjects\Email;
 use App\Domain\User\ValueObjects\Id;
+use App\Domain\User\ValueObjects\Password;
 
 final class User
 {
@@ -16,6 +17,7 @@ final class User
         private Id $id,
         private Email $email,
         private StringValueObject $name,
+        private Password $password,
         private DateTimeValueObject $created_at,
         private ?DateTimeValueObject $updated_at
     ) {
@@ -25,6 +27,7 @@ final class User
         Id $id,
         Email $email,
         StringValueObject $name,
+        Password $password,
         DateTimeValueObject $created_at,
         ?DateTimeValueObject $updated_at = null
     ): self
@@ -33,6 +36,7 @@ final class User
             $id,
             $email,
             $name,
+            $password,
             $created_at,
             $updated_at
         );
@@ -51,6 +55,11 @@ final class User
     public function name(): StringValueObject
     {
         return $this->name;
+    }
+
+    public function password(): StringValueObject
+    {
+        return $this->password;
     }
 
     public function createdAt(): DateTimeValueObject
@@ -73,6 +82,11 @@ final class User
         $this->email = Email::fromString($email);
     }
 
+    public function updatePassword(string $password): void
+    {
+        $this->password = Password::fromString($password);
+    }
+
     public function asArray(): array
     {
         return [
@@ -80,7 +94,7 @@ final class User
             'email' => $this->email()->value(),
             'name' => $this->name()->value(),
             'created_at' => $this->createdAt()->value(),
-            'updated_at' => $this->updatedAt()->value()
+            'updated_at' => $this->updatedAt()?->value()
         ];
     }
 }

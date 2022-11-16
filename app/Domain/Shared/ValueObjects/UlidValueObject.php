@@ -20,12 +20,12 @@ class UlidValueObject implements Stringable, UlidInterface
 
     public function __toString(): string
     {
-        return (string) $this->value();
+        return $this->value;
     }
 
     public function guard(string $value)
     {
-        if (Ulid::isValid($value)) {
+        if (false === Ulid::isValid($value)) {
             throw new InvalidArgumentException(sprintf('Value <%s> is not a valid ULID', $value));
         }
     }

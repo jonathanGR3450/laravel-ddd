@@ -12,7 +12,9 @@ use App\Domain\User\UserSearchCriteria;
 use App\Domain\User\ValueObjects\Email;
 use App\Domain\User\ValueObjects\Id;
 use App\Domain\User\ValueObjects\Name;
+use App\Domain\User\ValueObjects\Password;
 use App\Infrastructure\Laravel\Models\User as ModelsUser;
+use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -24,6 +26,7 @@ class UserRepository implements UserRepositoryInterface
         $userModel->id = $user->id()->value();
         $userModel->email = $user->email()->value();
         $userModel->name = $user->name()->value();
+        $userModel->password = Hash::make($user->password()->value());
         $userModel->created_at = DateTimeValueObject::now()->value();
 
         $userModel->save();
@@ -99,6 +102,7 @@ class UserRepository implements UserRepositoryInterface
             Id::fromPrimitives($model->id),
             Email::fromString($model->email),
             Name::fromString($model->name),
+            Password::fromString($model->password),
             DateTimeValueObject::fromPrimitives($model->created_at),
             !empty($model->updated_at) ? DateTimeValueObject::fromPrimitives($model->updated_at) : null,
         );
