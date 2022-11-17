@@ -21,4 +21,6 @@ use Illuminate\Support\Facades\Route;
 // Route::resource('users', 'UserController');
 Route::post('users', 'User\CreateUserController');
 Route::put('users/{id}', 'User\UpdateUserController');
+Route::get('users/{id}', 'User\ShowUserController');
+Route::delete('users/{id}', 'User\DestroyUserController');
 Route::get('users', 'User\IndexUserController');

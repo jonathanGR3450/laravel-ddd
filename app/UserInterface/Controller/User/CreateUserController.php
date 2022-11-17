@@ -3,7 +3,6 @@
 namespace App\UserInterface\Controller\User;
 
 use App\Application\User\CreateUserUseCase;
-use App\Domain\User\UserRepositoryInterface;
 use App\Infrastructure\Laravel\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -11,10 +10,10 @@ use Illuminate\Http\JsonResponse;
 
 class CreateUserController extends Controller
 {
-    private UserRepositoryInterface $userRepositoryInterface;
+    private CreateUserUseCase $createUserUsercase;
 
-    public function __construct(UserRepositoryInterface $userRepositoryInterface) {
-        $this->userRepositoryInterface = $userRepositoryInterface;
+    public function __construct(CreateUserUseCase $createUserUsercase) {
+        $this->createUserUsercase = $createUserUsercase;
     }
 
     /**
@@ -24,8 +23,7 @@ class CreateUserController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $createUserUsercase = new CreateUserUseCase($this->userRepositoryInterface);
-        $user = $createUserUsercase->__invoke($request->input('name'), $request->input('email'), $request->input('password'));
+        $user = $this->createUserUsercase->__invoke($request->input('name'), $request->input('email'), $request->input('password'));
 
         return Response::json([
             'data' => $user->asArray()

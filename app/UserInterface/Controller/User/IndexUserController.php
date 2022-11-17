@@ -3,7 +3,6 @@
 namespace App\UserInterface\Controller\User;
 
 use App\Application\User\IndexUserUseCase;
-use App\Domain\User\UserRepositoryInterface;
 use App\Infrastructure\Laravel\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -11,10 +10,10 @@ use Illuminate\Http\JsonResponse;
 
 class IndexUserController extends Controller
 {
-    private UserRepositoryInterface $userRepositoryInterface;
+    private IndexUserUseCase $indexUserUseCase;
 
-    public function __construct(UserRepositoryInterface $userRepositoryInterface) {
-        $this->userRepositoryInterface = $userRepositoryInterface;
+    public function __construct(IndexUserUseCase $indexUserUseCase) {
+        $this->indexUserUseCase = $indexUserUseCase;
     }
 
     /**
@@ -24,9 +23,7 @@ class IndexUserController extends Controller
      */
     public function __invoke(Request $request)
     {
-        // dd($request->all());
-        $indexUserUseCase = new IndexUserUseCase($this->userRepositoryInterface);
-        $users = $indexUserUseCase->__invoke(
+        $users = $this->indexUserUseCase->__invoke(
             (int) $request->query('offset'),
             $request->query('email'),
             $request->query('name'),
@@ -34,6 +31,6 @@ class IndexUserController extends Controller
 
         return Response::json([
             'data' => $users
-        ], JsonResponse::HTTP_CREATED);
+        ], JsonResponse::HTTP_OK);
     }
 }

@@ -3,7 +3,6 @@
 namespace App\UserInterface\Controller\User;
 
 use App\Application\User\UpdateUserUseCase;
-use App\Domain\User\UserRepositoryInterface;
 use App\Infrastructure\Laravel\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -11,10 +10,10 @@ use Illuminate\Http\JsonResponse;
 
 class UpdateUserController extends Controller
 {
-    private UserRepositoryInterface $userRepositoryInterface;
+    private UpdateUserUseCase $updateUserUseCase;
 
-    public function __construct(UserRepositoryInterface $userRepositoryInterface) {
-        $this->userRepositoryInterface = $userRepositoryInterface;
+    public function __construct(UpdateUserUseCase $updateUserUseCase) {
+        $this->updateUserUseCase = $updateUserUseCase;
     }
 
     /**
@@ -24,11 +23,10 @@ class UpdateUserController extends Controller
      */
     public function __invoke(Request $request, string $id)
     {
-        $updateUserUseCase = new UpdateUserUseCase($this->userRepositoryInterface);
-        $user = $updateUserUseCase->__invoke($request->input('name'), $request->input('email'), $request->input('password'), $id);
+        $user = $this->updateUserUseCase->__invoke($request->input('name'), $request->input('email'), $request->input('password'), $id);
 
         return Response::json([
             'data' => $user->asArray()
-        ], JsonResponse::HTTP_CREATED);
+        ], JsonResponse::HTTP_OK);
     }
 }
