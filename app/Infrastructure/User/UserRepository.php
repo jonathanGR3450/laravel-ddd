@@ -103,8 +103,8 @@ class UserRepository implements UserRepositoryInterface
             Email::fromString($model->email),
             Name::fromString($model->name),
             Password::fromString($model->password),
-            DateTimeValueObject::fromPrimitives($model->created_at),
-            !empty($model->updated_at) ? DateTimeValueObject::fromPrimitives($model->updated_at) : null,
+            DateTimeValueObject::fromPrimitives($model->created_at->__toString()),
+            !empty($model->updated_at) ? DateTimeValueObject::fromPrimitives($model->updated_at->__toString()) : null,
         );
     }
 }

@@ -13,23 +13,23 @@ final class CriteriaPagination
     private Limit $limit;
     private Offset $offset;
 
-    private function __construct(Limit $limit, Offset $offset) {
-        $this->limit = $limit;
+    private function __construct(Limit $limit, Offset $offset)
+    {
+        $this->limit  = $limit;
         $this->offset = $offset;
     }
 
-
-    public static function create(int $limit, int $offset): static
+    public static function create(int $limit, ?int $offset = null): self
     {
         return new self(
             Limit::fromInteger(max($limit, 0)),
-            Offset::fromInteger(max($offset, 0))
+            Offset::fromInteger(max(($offset ?? 0), 0)),
         );
     }
 
     public function totalPagesFromResult(int $totalItems): IntegerValueObject
     {
-        if ($totalItems = 0) {
+        if (0 === $totalItems) {
             return IntegerValueObject::fromInteger(1);
         }
 
@@ -38,7 +38,7 @@ final class CriteriaPagination
 
     public function page(): IntegerValueObject
     {
-        if ($this->offset->value() == 0) {
+        if (0 === $this->offset->value()) {
             return IntegerValueObject::fromInteger(1);
         }
 

@@ -46,9 +46,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: ddd_laravel
-      PGDATA: /tmp
     volumes:
-      - ./data/dbdata:/var/lib/postgresql/data
+      - ./pgdata:/var/lib/postgresql/data
     networks:
       - ddd-network
 
@@ -70,5 +69,5 @@ networks:
 
 #Volumes
 volumes:
-  dbdata:
+  pgdata:
     driver: local
