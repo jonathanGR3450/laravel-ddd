@@ -20,13 +20,9 @@ final class IndexUserUseCase
         $this->userRepositoryInterface = $userRepositoryInterface;
     }
 
-    public function __invoke($request): array
+    public function __invoke(?int $offset = null, ?string $email = null, ?string $name = null): array
     {
-        $criteria = UserSearchCriteria::create(
-            (int) $request->query('offset'),
-            $request->query('email'),
-            $request->query('name'),
-        );
+        $criteria = UserSearchCriteria::create($offset, $email, $name);
         $criteria->sortBy(new CriteriaSort(CriteriaField::fromString('name'), CriteriaSortDirection::ASC));
         $users = $this->userRepositoryInterface->searchByCriteria($criteria);
 

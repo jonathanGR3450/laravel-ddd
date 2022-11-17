@@ -26,7 +26,11 @@ class IndexUserController extends Controller
     {
         // dd($request->all());
         $indexUserUseCase = new IndexUserUseCase($this->userRepositoryInterface);
-        $users = $indexUserUseCase->__invoke($request);
+        $users = $indexUserUseCase->__invoke(
+            (int) $request->query('offset'),
+            $request->query('email'),
+            $request->query('name'),
+        );
 
         return Response::json([
             'data' => $users
