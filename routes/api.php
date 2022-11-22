@@ -1,5 +1,6 @@
 <?php
 
+use App\UserInterface\Controller\Auth\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,9 +19,22 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-// Route::resource('users', 'UserController');
-Route::post('users', 'User\CreateUserController');
-Route::put('users/{id}', 'User\UpdateUserController');
-Route::get('users/{id}', 'User\ShowUserController');
-Route::delete('users/{id}', 'User\DestroyUserController');
-Route::get('users', 'User\IndexUserController');
+# auth routes
+Route::controller(AuthController::class)->group(function () {
+    Route::post('login', 'login');
+    Route::post('register', 'register');
+    Route::post('logout', 'logout');
+    Route::post('refresh', 'refresh');
+
+});
+
+Route::post('user','Auth\AuthController@getAuthenticatedUser');
+Route::middleware(['jwt.verify'])->group(function ()
+{
+
+    Route::post('users', 'User\CreateUserController');
+    Route::put('users/{id}', 'User\UpdateUserController');
+    Route::get('users/{id}', 'User\ShowUserController');
+    Route::delete('users/{id}', 'User\DestroyUserController');
+    Route::get('users', 'User\IndexUserController');
+});

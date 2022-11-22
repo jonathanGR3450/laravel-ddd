@@ -55,6 +55,17 @@ class UserRepository implements UserRepositoryInterface
         return self::map($userModel);
     }
 
+    public function findByIdGetModel(Id $id): ModelsUser
+    {
+        $userModel = ModelsUser::find($id->value());
+
+        if (empty($userModel)) {
+            throw new UserNotFoundException('User does not exist');
+        }
+
+        return $userModel;
+    }
+
     public function searchById(Id $id): ?User
     {
         $userModel = ModelsUser::find($id->value());
