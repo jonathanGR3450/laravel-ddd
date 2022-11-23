@@ -9,10 +9,10 @@ use App\Domain\Shared\ValueObjects\StringValueObject;
 use App\Domain\User\ValueObjects\Email;
 use App\Domain\User\ValueObjects\Id;
 use App\Domain\User\ValueObjects\Password;
+use Illuminate\Support\Facades\Mail;
 
 final class User
 {
-
     private function __construct(
         private Id $id,
         private Email $email,
@@ -30,8 +30,7 @@ final class User
         Password $password,
         DateTimeValueObject $created_at,
         ?DateTimeValueObject $updated_at = null
-    ): self
-    {
+    ): self {
         return new self(
             $id,
             $email,
@@ -85,6 +84,15 @@ final class User
     public function updatePassword(string $password): void
     {
         $this->password = Password::fromString($password);
+    }
+
+    public function sendEmailUserWasRegistered(): void
+    {
+        Mail::send('emails.mail', $this->asArray(), function ($message) {
+            $message->to($this->email()->value())
+                    ->subject("Bienvenido a {$this->name()->value()}");
+            $message->from($this->email()->value());
+        });
     }
 
     public function asArray(): array

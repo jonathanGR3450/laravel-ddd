@@ -6,6 +6,7 @@ namespace App\Application\User;
 
 use App\Domain\Shared\ValueObjects\DateTimeValueObject;
 use App\Domain\User\Aggregate\User;
+use App\Domain\User\Events\UserRegistered;
 use App\Domain\User\UserRepositoryInterface;
 use App\Domain\User\ValueObjects\Email;
 use App\Domain\User\ValueObjects\Id;
@@ -31,6 +32,9 @@ final class CreateUserUseCase
         );
 
         $this->userRepositoryInterface->create($user);
+
+        # dispatched user register notify
+        event(new UserRegistered($user));
         return $user;
     }
 }
