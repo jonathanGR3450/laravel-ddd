@@ -22,7 +22,17 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $fillable = [
         'name',
+        'last_name',
         'email',
+        'identification',
+        'type_document_id',
+        'cell_phone',
+        'city',
+        'address',
+        'expedition_city',
+        'is_manager',
+        'is_signer',
+        'is_verified',
         'password',
         'updated_at',
     ];
@@ -64,5 +74,10 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function document()
+    {
+        return $this->belongsTo(TypeDocument::class);
     }
 }
