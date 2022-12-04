@@ -4,6 +4,7 @@ namespace App\Infrastructure\Laravel\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Infrastructure\Laravel\Models\Vinculation\Process;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -79,5 +80,10 @@ class User extends Authenticatable implements JWTSubject
     public function document()
     {
         return $this->belongsTo(TypeDocument::class);
+    }
+
+    public function processes()
+    {
+        return $this->hasMany(Process::class);
     }
 }

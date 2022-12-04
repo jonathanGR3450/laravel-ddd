@@ -61,7 +61,7 @@ return new class extends Migration
     // tabla tipo proceso
     // tabla proceso
     // tabla archivos
-    // tabla tipo documentos
+    //  tabla tipo documentos
     // tabla estados
     // enviar documentos para notificar que fueron subidos los documentos
 };
