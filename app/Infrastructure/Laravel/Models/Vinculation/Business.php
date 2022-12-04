@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Business extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory;
+    use HasUuids;
 
     /**
      * The attributes that are mass assignable.
@@ -33,5 +34,16 @@ class Business extends Model
     public function process()
     {
         return $this->hasMany(Process::class);
+    }
+
+    public function users()
+    {
+        //return $this->belongsToMany(RelatedModel, pivot_table_name, foreign_key_of_current_model_in_pivot_table, foreign_key_of_other_model_in_pivot_table);
+        return $this->belongsToMany(
+            User::class,
+            'business_users',
+            'business_id',
+            'user_id'
+        );
     }
 }

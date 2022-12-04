@@ -4,6 +4,7 @@ namespace App\Infrastructure\Laravel\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Infrastructure\Laravel\Models\Vinculation\Business;
 use App\Infrastructure\Laravel\Models\Vinculation\Process;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,7 +15,10 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens, HasFactory, Notifiable, HasUuids;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
+    use HasUuids;
 
     /**
      * The attributes that are mass assignable.
@@ -85,5 +89,16 @@ class User extends Authenticatable implements JWTSubject
     public function processes()
     {
         return $this->hasMany(Process::class);
+    }
+
+    public function business()
+    {
+        //return $this->belongsToMany(RelatedModel, pivot_table_name, foreign_key_of_current_model_in_pivot_table, foreign_key_of_other_model_in_pivot_table);
+        return $this->belongsToMany(
+            Business::class,
+            'business_users',
+            'user_id',
+            'business_id'
+        );
     }
 }
