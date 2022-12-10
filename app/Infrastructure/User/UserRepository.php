@@ -9,10 +9,20 @@ use App\Domain\User\Aggregate\User;
 use App\Domain\User\Exception\UserNotFoundException;
 use App\Domain\User\UserRepositoryInterface;
 use App\Domain\User\UserSearchCriteria;
+use App\Domain\User\ValueObjects\Address;
+use App\Domain\User\ValueObjects\CellPhone;
+use App\Domain\User\ValueObjects\City;
 use App\Domain\User\ValueObjects\Email;
 use App\Domain\User\ValueObjects\Id;
+use App\Domain\User\ValueObjects\Identification;
+use App\Domain\User\ValueObjects\IsManager;
+use App\Domain\User\ValueObjects\IsSigner;
+use App\Domain\User\ValueObjects\IsVerified;
+use App\Domain\User\ValueObjects\LastName;
 use App\Domain\User\ValueObjects\Name;
 use App\Domain\User\ValueObjects\Password;
+use App\Domain\User\ValueObjects\TypeDocumentId;
+use App\Domain\Vinculation\ValueObjects\CityRegister;
 use App\Infrastructure\Laravel\Models\User as ModelsUser;
 use Illuminate\Support\Facades\Hash;
 
@@ -24,8 +34,18 @@ class UserRepository implements UserRepositoryInterface
         $userModel = new ModelsUser();
 
         $userModel->id = $user->id()->value();
-        $userModel->email = $user->email()->value();
         $userModel->name = $user->name()->value();
+        $userModel->last_name = $user->lastName()->value();
+        $userModel->email = $user->email()->value();
+        $userModel->identification = $user->identification()->value();
+        $userModel->type_document_id = $user->typeDocumentId()->value();
+        $userModel->cell_phone = $user->cellPhone()->value();
+        $userModel->city = $user->city()->value();
+        $userModel->address = $user->address()->value();
+        $userModel->city_register = $user->cityRegister()->value();
+        $userModel->is_manager = $user->isManager()->value();
+        $userModel->is_signer = $user->isSigner()->value();
+        $userModel->is_verified = $user->isVerified()?->value();
         $userModel->password = Hash::make($user->password()->value());
         $userModel->created_at = DateTimeValueObject::now()->value();
 
@@ -37,8 +57,18 @@ class UserRepository implements UserRepositoryInterface
         $userModel = ModelsUser::find($user->id()->value());
 
         $userModel->id = $user->id()->value();
-        $userModel->email = $user->email()->value();
         $userModel->name = $user->name()->value();
+        $userModel->last_name = $user->lastName()->value();
+        $userModel->email = $user->email()->value();
+        $userModel->identification = $user->identification()->value();
+        $userModel->type_document_id = $user->typeDocumentId()->value();
+        $userModel->cell_phone = $user->cellPhone()->value();
+        $userModel->city = $user->city()->value();
+        $userModel->address = $user->address()->value();
+        $userModel->city_register = $user->cityRegister()->value();
+        $userModel->is_manager = $user->isManager()->value();
+        $userModel->is_signer = $user->isSigner()->value();
+        $userModel->is_verified = $user->isVerified()?->value();
         $userModel->updated_at = DateTimeValueObject::now()->value();
 
         $userModel->save();
@@ -111,8 +141,18 @@ class UserRepository implements UserRepositoryInterface
     {
         return User::create(
             Id::fromPrimitives($model->id),
-            Email::fromString($model->email),
             Name::fromString($model->name),
+            LastName::fromString($model->last_name),
+            Email::fromString($model->email),
+            Identification::fromInteger($model->identification),
+            TypeDocumentId::fromPrimitives($model->type_document_id),
+            CellPhone::fromInteger($model->cell_phone),
+            City::fromString($model->city),
+            Address::fromString($model->address),
+            CityRegister::fromString($model->city_register),
+            IsManager::fromBoolean($model->is_manager),
+            IsSigner::fromBoolean($model->is_signer),
+            !empty($model->is_verified) ? IsVerified::fromString($model->is_verified): null,
             Password::fromString($model->password),
             DateTimeValueObject::fromPrimitives($model->created_at->__toString()),
             !empty($model->updated_at) ? DateTimeValueObject::fromPrimitives($model->updated_at->__toString()) : null,

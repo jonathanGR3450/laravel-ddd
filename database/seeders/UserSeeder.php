@@ -36,7 +36,7 @@ class UserSeeder extends Seeder
                 'cell_phone' => '3213860504',
                 'city' => 'Villavicencio',
                 'address' => 'cll 30 17b',
-                'expedition_city' => 'Villavicencio',
+                'city_register' => 'Villavicencio',
                 'is_manager' => true,
                 'is_signer' => true,
                 'is_verified' => 'id_banlinea',

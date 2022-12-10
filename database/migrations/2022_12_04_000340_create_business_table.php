@@ -16,15 +16,15 @@ return new class extends Migration
         Schema::create('business', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('business_name');
-            $table->integer('phone');
-            $table->integer('nit');
+            $table->bigInteger('phone');
+            $table->bigInteger('nit');
             $table->string('address');
             $table->string('department');
             $table->string('city');
             $table->string('type_person');
             $table->string('city_register');
             $table->string('email');
-            $table->date('expiration_date');
+            $table->date('expiration_date')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
         });

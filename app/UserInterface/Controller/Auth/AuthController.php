@@ -3,6 +3,9 @@
 namespace App\UserInterface\Controller\Auth;
 
 use App\Application\Auth\Contracts\AuthUserInterface;
+use App\Application\Vinculation\CreateBusinessUseCase;
+use App\Application\Vinculation\CreateBusinessUserUseCase;
+use App\Application\Vinculation\CreateVinculationUseCase;
 use App\Infrastructure\Laravel\Controller;
 use App\UserInterface\Requests\Auth\LoginFormRequest;
 use Illuminate\Http\Request;
@@ -45,9 +48,37 @@ class AuthController extends Controller
     }
 
 
-    public function register(Request $request)
+    public function register(Request $request, CreateBusinessUseCase $createBusinessUseCase, CreateVinculationUseCase $createVinculationUseCase, CreateBusinessUserUseCase $createBusinessUserUseCase)
     {
-        $user = $this->authUserInterface->createUser($request->input('name'), $request->input('email'), $request->input('password'));
+        // dd($request->all(), $request->input('last_name'));
+        $user = $this->authUserInterface->createUser(
+            $request->input('name'),
+            $request->input('last_name'),
+            $request->input('email'),
+            $request->input('identification'),
+            $request->input('type_document_id'),
+            $request->input('cell_phone'),
+            $request->input('city'),
+            $request->input('address'),
+            $request->input('city_register'),
+            (bool) $request->input('is_manager'),
+            (bool) $request->input('is_signer'),
+            $request->input('is_verified'),
+            $request->input('password')
+        );
+        $business = $createBusinessUseCase->__invoke(
+            $request->input('business_name'),
+            $request->input('phone'),
+            $request->input('nit'),
+            $request->input('business_address'),
+            $request->input('deparment'),
+            $request->input('business_city'),
+            $request->input('type_person'),
+            $request->input('business_email'),
+            $request->input('business_city_register')
+        );
+        $createBusinessUserUseCase->__invoke($business, $user);
+        $vinculation = $createVinculationUseCase->__invoke($user->id()->value(), $business->id()->value());
         $token = $this->authUserInterface->loginUserModel($user);
 
         return response()->json([

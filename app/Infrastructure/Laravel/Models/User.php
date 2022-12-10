@@ -34,7 +34,7 @@ class User extends Authenticatable implements JWTSubject
         'cell_phone',
         'city',
         'address',
-        'expedition_city',
+        'city_register',
         'is_manager',
         'is_signer',
         'is_verified',

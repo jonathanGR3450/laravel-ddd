@@ -49,9 +49,37 @@ final class AuthUser implements AuthUserInterface
         return Auth::user();
     }
 
-    public function createUser(string $name, string $email, string $password): User
+    public function createUser(
+        string $name,
+        string $last_name,
+        string $email,
+        int $identification,
+        string $type_document_id,
+        int $cell_phone,
+        string $city,
+        string $address,
+        string $city_register,
+        bool $is_manager,
+        bool $is_signer,
+        ?string $is_verified,
+        string $password,
+    ): User
     {
-        $user = $this->createUserUseCase->__invoke($name, $email, $password);
+        $user = $this->createUserUseCase->__invoke(
+            $name,
+            $last_name,
+            $email,
+            $identification,
+            $type_document_id,
+            $cell_phone,
+            $city,
+            $address,
+            $city_register,
+            $is_manager,
+            $is_signer,
+            $is_verified,
+            $password,
+        );
         return $user;
     }
 

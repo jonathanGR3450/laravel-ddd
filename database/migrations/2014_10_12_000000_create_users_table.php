@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('last_name');
             $table->string('email')->unique();
-            $table->integer('identification');
+            $table->bigInteger('identification');
             $table->ulid('type_document_id')->nullable(false);
             $table->foreign('type_document_id')
                     ->references('id')
@@ -29,10 +29,10 @@ return new class extends Migration
             $table->string('cell_phone');
             $table->string('city');
             $table->string('address');
-            $table->string('expedition_city');
+            $table->string('city_register');
             $table->boolean('is_manager');
             $table->boolean('is_signer');
-            $table->string('is_verified');
+            $table->string('is_verified')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

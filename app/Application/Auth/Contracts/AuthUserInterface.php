@@ -10,7 +10,21 @@ interface AuthUserInterface
 
     public function loginUserModel(User $user): string;
 
-    public function createUser(string $name, string $email, string $password): User;
+    public function createUser(
+        string $name,
+        string $last_name,
+        string $email,
+        int $identification,
+        string $type_document_id,
+        int $cell_phone,
+        string $city,
+        string $address,
+        string $city_register,
+        bool $is_manager,
+        bool $is_signer,
+        string $is_verified,
+        string $password,
+    ): User;
 
     public function logout(): void;
 
