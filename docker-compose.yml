@@ -45,9 +45,10 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: ddd_laravel
+      POSTGRES_MULTIPLE_DATABASES: ddd_laravel,ddd_laravel_testing
     volumes:
       - ./pgdata:/var/lib/postgresql/data
+      - ./init-multi-postgres-databases.sh:/docker-entrypoint-initdb.d/init-multi-postgres-databases.sh
     networks:
       - ddd-network
 

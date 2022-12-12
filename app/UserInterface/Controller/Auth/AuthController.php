@@ -8,8 +8,8 @@ use App\Application\Vinculation\CreateBusinessUserUseCase;
 use App\Application\Vinculation\CreateVinculationUseCase;
 use App\Infrastructure\Laravel\Controller;
 use App\UserInterface\Requests\Auth\LoginFormRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\UnauthorizedException;
 
 class AuthController extends Controller
@@ -28,6 +28,7 @@ class AuthController extends Controller
             $user = $this->authUserInterface->getAuthUser();
             return response()->json([
                 'status' => 'success',
+                'message' => 'User logged successfully',
                 'user' => $user,
                 'authorization' => [
                     'token' => $token,
@@ -71,7 +72,7 @@ class AuthController extends Controller
             $request->input('phone'),
             $request->input('nit'),
             $request->input('business_address'),
-            $request->input('deparment'),
+            $request->input('department'),
             $request->input('business_city'),
             $request->input('type_person'),
             $request->input('business_email'),
@@ -89,7 +90,7 @@ class AuthController extends Controller
                 'token' => $token,
                 'type' => 'bearer',
             ]
-        ]);
+        ], JsonResponse::HTTP_CREATED);
     }
 
     public function logout()
@@ -111,6 +112,7 @@ class AuthController extends Controller
     {
         return response()->json([
             'status' => 'success',
+            'message' => 'Successfully refresh token',
             'user' => $this->authUserInterface->getAuthenticatedUser(),
             'authorization' => [
                 'token' => $this->authUserInterface->refresh(),

@@ -6,6 +6,9 @@ COPY composer.lock composer.json /var/www/
 # directorio de trabajo
 WORKDIR /var/www
 
+# fix permissions
+RUN chown -R 1000:1000 .
+
 # Install dependencies
 RUN apt-get update && pecl install redis && apt-get install -y  --no-install-recommends \
     libzip-dev \
