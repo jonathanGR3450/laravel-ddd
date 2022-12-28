@@ -8,8 +8,9 @@ use App\Application\Vinculation\CreateBusinessUserUseCase;
 use App\Application\Vinculation\CreateVinculationUseCase;
 use App\Infrastructure\Laravel\Controller;
 use App\UserInterface\Requests\Auth\LoginFormRequest;
+use App\UserInterface\Requests\Auth\RegisterFormRequest;
+use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Validation\UnauthorizedException;
 
 class AuthController extends Controller
@@ -26,6 +27,12 @@ class AuthController extends Controller
         try {
             $token = $this->authUserInterface->loginCredentials($request->input('email'), $request->input('password'));
             $user = $this->authUserInterface->getAuthUser();
+            $userBelongToBusiness = $this->authUserInterface->userBelongToBusiness($user, $request->business_id);
+
+            if (!$userBelongToBusiness) {
+                throw new Exception("La empresa seleccionada no pertenece al usuario", JsonResponse::HTTP_BAD_REQUEST);
+            }
+            $this->authUserInterface->saveBusinessSession($request->business_id);
             return response()->json([
                 'status' => 'success',
                 'message' => 'User logged successfully',
@@ -39,17 +46,17 @@ class AuthController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Unauthorized',
-            ], 401);
+            ], JsonResponse::HTTP_UNAUTHORIZED);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
-            ], 500);
+            ], empty($e->getCode()) ? 500 : $e->getCode());
         }
     }
 
 
-    public function register(Request $request, CreateBusinessUseCase $createBusinessUseCase, CreateVinculationUseCase $createVinculationUseCase, CreateBusinessUserUseCase $createBusinessUserUseCase)
+    public function register(RegisterFormRequest $request, CreateBusinessUseCase $createBusinessUseCase, CreateVinculationUseCase $createVinculationUseCase, CreateBusinessUserUseCase $createBusinessUserUseCase)
     {
         // dd($request->all(), $request->input('last_name'));
         $user = $this->authUserInterface->createUser(
@@ -96,6 +103,7 @@ class AuthController extends Controller
     public function logout()
     {
         $this->authUserInterface->logout();
+        $this->authUserInterface->removeBusinessSession();
         return response()->json([
             'status' => 'success',
             'message' => 'Successfully logged out',
@@ -110,14 +118,21 @@ class AuthController extends Controller
 
     public function refresh()
     {
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Successfully refresh token',
-            'user' => $this->authUserInterface->getAuthenticatedUser(),
-            'authorization' => [
-                'token' => $this->authUserInterface->refresh(),
-                'type' => 'bearer',
-            ]
-        ]);
+        try {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Successfully refresh token',
+                'user' => $this->authUserInterface->getAuthenticatedUser(),
+                'authorization' => [
+                    'token' => $this->authUserInterface->refresh(),
+                    'type' => 'bearer',
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
     }
 }

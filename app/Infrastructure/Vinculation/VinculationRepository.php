@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Vinculation;
 
+use App\Domain\Shared\Aggregate\TypeProcess;
 use App\Domain\Shared\ValueObjects\DateTimeValueObject;
+use App\Domain\Vinculation\Aggregate\Business;
 use App\Domain\Vinculation\Aggregate\Vinculation;
 use App\Domain\Vinculation\ValueObjects\BusinessId;
 use App\Domain\Vinculation\ValueObjects\Id;
@@ -13,6 +15,7 @@ use App\Domain\Vinculation\ValueObjects\TypeProcessId;
 use App\Domain\Vinculation\ValueObjects\UserId;
 use App\Domain\Vinculation\VinculationRepositoryInterface;
 use App\Infrastructure\Laravel\Models\Vinculation\Process;
+use Exception;
 
 class VinculationRepository implements VinculationRepositoryInterface
 {
@@ -29,6 +32,19 @@ class VinculationRepository implements VinculationRepositoryInterface
         $processModel->created_at = DateTimeValueObject::now()->value();
 
         $processModel->save();
+    }
+
+    public function findByBusinessTypeProcess(TypeProcess $typeProcess, Business $business): Vinculation
+    {
+        $vinculationModel = Process::where('type_process_id', $typeProcess->id()->value())
+        ->where('business_id', $business->id()->value())
+        ->get()
+        ->first();
+        if (empty($vinculationModel)) {
+            throw new Exception('process does not exist');
+        }
+
+        return self::map($vinculationModel);
     }
 
     public static function map(Process $model): Vinculation

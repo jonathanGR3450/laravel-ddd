@@ -3,6 +3,8 @@
 namespace App\Application\Auth\Contracts;
 
 use App\Domain\User\Aggregate\User;
+use App\Domain\Vinculation\Aggregate\Business;
+use App\Infrastructure\Laravel\Models\User as ModelsUser;
 
 interface AuthUserInterface
 {
@@ -28,9 +30,17 @@ interface AuthUserInterface
 
     public function logout(): void;
 
+    public function removeBusinessSession(): void;
+
     public function refresh(): string;
 
     public function getAuthUser(): \Illuminate\Contracts\Auth\Authenticatable;
 
     public function getAuthenticatedUser(): \Illuminate\Contracts\Auth\Authenticatable;
+
+    public function userBelongToBusiness(ModelsUser $user, string $business_id): bool;
+
+    public function saveBusinessSession(string $business_id): void;
+
+    public function getBusinessSession(): Business;
 }

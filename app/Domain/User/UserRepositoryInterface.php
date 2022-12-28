@@ -30,4 +30,6 @@ interface UserRepositoryInterface
     public function searchByCriteria(UserSearchCriteria $criteria): array;
 
     public function delete(User $user): void;
+
+    public function getAuthUser(): User|bool;
 }

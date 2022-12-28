@@ -24,11 +24,11 @@ use App\Domain\User\ValueObjects\Password;
 use App\Domain\User\ValueObjects\TypeDocumentId;
 use App\Domain\Vinculation\ValueObjects\CityRegister;
 use App\Infrastructure\Laravel\Models\User as ModelsUser;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserRepositoryInterface
 {
-
     public function create(User $user): void
     {
         $userModel = new ModelsUser();
@@ -137,6 +137,14 @@ class UserRepository implements UserRepositoryInterface
         $userModel->delete();
     }
 
+    public function getAuthUser(): User|bool
+    {
+        if (!$user = Auth::user()) {
+            return false;
+        }
+        $this->map($user);
+    }
+
     public static function map(ModelsUser $model): User
     {
         return User::create(
@@ -152,7 +160,7 @@ class UserRepository implements UserRepositoryInterface
             CityRegister::fromString($model->city_register),
             IsManager::fromBoolean($model->is_manager),
             IsSigner::fromBoolean($model->is_signer),
-            !empty($model->is_verified) ? IsVerified::fromString($model->is_verified): null,
+            !empty($model->is_verified) ? IsVerified::fromString($model->is_verified) : null,
             Password::fromString($model->password),
             DateTimeValueObject::fromPrimitives($model->created_at->__toString()),
             !empty($model->updated_at) ? DateTimeValueObject::fromPrimitives($model->updated_at->__toString()) : null,

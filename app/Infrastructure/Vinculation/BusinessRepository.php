@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Vinculation;
 
 use App\Domain\Shared\ValueObjects\DateTimeValueObject;
+use App\Domain\Shared\ValueObjects\Id;
 use App\Domain\User\Aggregate\User;
 use App\Domain\Vinculation\Aggregate\Business;
 use App\Domain\Vinculation\Aggregate\BusinessUser as AggregateBusinessUser;
@@ -15,12 +16,12 @@ use App\Domain\Vinculation\ValueObjects\City;
 use App\Domain\Vinculation\ValueObjects\CityRegister;
 use App\Domain\Vinculation\ValueObjects\Department;
 use App\Domain\Vinculation\ValueObjects\Email;
-use App\Domain\Vinculation\ValueObjects\Id;
 use App\Domain\Vinculation\ValueObjects\Nit;
 use App\Domain\Vinculation\ValueObjects\Phone;
 use App\Domain\Vinculation\ValueObjects\TypePerson;
 use App\Infrastructure\Laravel\Models\Vinculation\Business as VinculationBusiness;
 use App\Infrastructure\Laravel\Models\Vinculation\BusinessUser;
+use Exception;
 
 class BusinessRepository implements BusinessRepositoryInterface
 {
@@ -54,6 +55,16 @@ class BusinessRepository implements BusinessRepositoryInterface
         $businessUserModel->created_at = DateTimeValueObject::now()->value();
 
         $businessUserModel->save();
+    }
+
+    public function findById(Id $id): Business
+    {
+        $businessModel = VinculationBusiness::find($id->value());
+
+        if (empty($businessModel)) {
+            throw new Exception('business does not exist');
+        }
+        return self::map($businessModel);
     }
 
     public static function map(VinculationBusiness $model): Business

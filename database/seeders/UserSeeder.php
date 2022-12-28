@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Domain\Shared\ValueObjects\UlidValueObject;
 use App\Infrastructure\Laravel\Models\TypeDocument;
 use App\Infrastructure\Laravel\Models\User;
+use App\Infrastructure\Laravel\Models\Vinculation\Business;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -19,10 +20,22 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::insert($this->data());
+        for ($i=1; $i < 3; $i++) { 
+            User::insert($this->data($i));
+        }
+
+        $business = Business::all();
+
+        // Populate the pivot table
+        User::all()->each(function ($user) use ($business) { 
+            $user->business()->attach(
+                $business->random(rand(1, 1))->pluck('id')->toArray(),
+                [ 'id' => UlidValueObject::random()->__toString()]
+            ); 
+        });
     }
 
-    public function data()
+    public function data(int $count)
     {
         $document = DB::table('type_documents')->where('initials', 'C.C.')->get('id')->first();
         return [
@@ -30,7 +43,7 @@ class UserSeeder extends Seeder
                 'id' => UlidValueObject::random(),
                 'name' => 'Jonathan',
                 'last_name' => 'Garzon',
-                'email' => 'jonatangarzon95@gmail.com',
+                'email' => "jonatangarzon+$count@gmail.com",
                 'identification' => '1121940890',
                 'type_document_id' => $document->id,
                 'cell_phone' => '3213860504',

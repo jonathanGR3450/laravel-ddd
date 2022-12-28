@@ -3,6 +3,7 @@
 namespace App\UserInterface\Requests\Auth;
 
 use App\UserInterface\Requests\CustomFormRequest;
+use Illuminate\Validation\Rule;
 
 class LoginFormRequest extends CustomFormRequest
 {
@@ -17,6 +18,7 @@ class LoginFormRequest extends CustomFormRequest
         return [
             'email' => 'required|string|email',
             'password' => 'required|string',
+            'business_id' => 'required|string|exists:business,id',
         ];
     }
 }

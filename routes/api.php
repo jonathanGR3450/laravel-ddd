@@ -37,4 +37,7 @@ Route::middleware(['jwt.verify'])->group(function ()
     Route::get('users/{id}', 'User\ShowUserController')->name('users.show');
     Route::delete('users/{id}', 'User\DestroyUserController')->name('users.destroy');
     Route::get('users', 'User\IndexUserController')->name('users.index');
+
+    # vinculation
+    Route::post('vinculations/file/upload', 'Vinculation\UploadFileController')->name('vinculation.upload');
 });

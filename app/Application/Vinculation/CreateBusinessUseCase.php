@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Vinculation;
 
 use App\Domain\Shared\ValueObjects\DateTimeValueObject;
+use App\Domain\Shared\ValueObjects\Id;
 use App\Domain\Vinculation\Aggregate\Business;
 use App\Domain\Vinculation\BusinessRepositoryInterface;
 use App\Domain\Vinculation\ValueObjects\Address;
@@ -13,7 +14,6 @@ use App\Domain\Vinculation\ValueObjects\City;
 use App\Domain\Vinculation\ValueObjects\CityRegister;
 use App\Domain\Vinculation\ValueObjects\Department;
 use App\Domain\Vinculation\ValueObjects\Email;
-use App\Domain\Vinculation\ValueObjects\Id;
 use App\Domain\Vinculation\ValueObjects\Nit;
 use App\Domain\Vinculation\ValueObjects\Phone;
 use App\Domain\Vinculation\ValueObjects\TypePerson;

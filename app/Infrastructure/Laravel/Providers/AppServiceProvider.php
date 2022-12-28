@@ -4,10 +4,14 @@ namespace App\Infrastructure\Laravel\Providers;
 
 use App\Application\Auth\AuthUser;
 use App\Application\Auth\Contracts\AuthUserInterface;
+use App\Domain\Shared\ArchiveRepositoryInterface;
+use App\Domain\Shared\DocumentRepositoryInterface;
 use App\Domain\Shared\TypeProcessRepositoryInterface;
 use App\Domain\User\UserRepositoryInterface;
 use App\Domain\Vinculation\BusinessRepositoryInterface;
 use App\Domain\Vinculation\VinculationRepositoryInterface;
+use App\Infrastructure\Shared\ArchiveRepository;
+use App\Infrastructure\Shared\DocumentRepository;
 use App\Infrastructure\Shared\TypeProcessRepository;
 use App\Infrastructure\User\UserRepository;
 use App\Infrastructure\Vinculation\BusinessRepository;
@@ -28,6 +32,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(BusinessRepositoryInterface::class, BusinessRepository::class);
         $this->app->bind(VinculationRepositoryInterface::class, VinculationRepository::class);
         $this->app->bind(TypeProcessRepositoryInterface::class, TypeProcessRepository::class);
+        $this->app->bind(DocumentRepositoryInterface::class, DocumentRepository::class);
+        $this->app->bind(ArchiveRepositoryInterface::class, ArchiveRepository::class);
     }
 
     /**

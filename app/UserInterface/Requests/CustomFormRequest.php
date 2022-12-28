@@ -5,6 +5,9 @@ namespace App\UserInterface\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Response;
 
 class CustomFormRequest extends FormRequest
 {
@@ -23,8 +26,7 @@ class CustomFormRequest extends FormRequest
         throw new HttpResponseException(response()->json([
             'success'   => 'error',
             'message'   => 'Validation errors',
-            'data'      => $validator->errors()
-        ]));
-
+            'errors'      => $validator->errors()
+        ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
     }
 }
