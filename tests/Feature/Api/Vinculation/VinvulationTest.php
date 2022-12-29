@@ -6,6 +6,7 @@ use App\Infrastructure\Laravel\Models\Document;
 use App\Infrastructure\Laravel\Models\User;
 use App\Infrastructure\Laravel\Models\Business;
 use App\Infrastructure\Laravel\Models\BusinessUser;
+use App\Infrastructure\Laravel\Models\Comment;
 use App\Infrastructure\Laravel\Models\Process;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -51,6 +52,7 @@ class VinvulationTest extends TestCase
         // "'cedula', 'camaracomercio', 'rut', 'declaracionrenta', 'estadosfinancieros', 'certificacionbancaria', 'composicionaccionaria'"
         $sizeInKilobytes = 10;
         $this->document = Document::where('name', 'declaracionrenta')->get()->first();
+        $this->document2 = Document::where('name', 'vinculacion')->get()->first();
         Storage::fake('local');
         $this->file = UploadedFile::fake()->create(
             'document.pdf',
@@ -110,26 +112,30 @@ class VinvulationTest extends TestCase
     /** @test */
     public function approved_by_factor_user()
     {
-        // $this->withHeader('Authorization', "Bearer {$this->token}");
-        // $comment = Comment::factory()->make();
-        // $data = [
-        //     'file' => $this->file,
-        //     'comment' => $comment->comment,
-        //     'business_id' => $this->business->id
-        // ];
+        $this->withHeader('Authorization', "Bearer {$this->token}");
+        $comment = Comment::factory()->make(['user_id' => $this->user->id]);
+        $data = [
+            'file' => $this->file,
+            'observation' => $comment->comment,
+            'business_id' => $this->business->id,
+            'document_id' => $this->document2->id,
+            'state' => true
+        ];
 
-        // $response = $this->postJson(route('vinculation.approved.factor'), $data);
+        $response = $this->postJson(route('vinculation.approved.factor'), $data);
 
-        // $response->assertCreated();
-        // $response->assertJsonStructure([
-        //     'status',
-        //     'message',
-        //     'data'
-        // ]);
+        $response->assertCreated();
+        $response->assertJsonStructure([
+            'status',
+            'message',
+            'data'
+        ]);
 
-        // $this->assertDatabaseHas(
-        //     'comments',
-        //     $comment->makeHidden(['id'])->toArray()
-        // );
+        $this->assertDatabaseHas(
+            'comments',
+            $comment->makeHidden(['id'])->toArray()
+        );
+
+        Storage::disk('local')->assertExists($response['data']['archive']['path'] . $response['data']['archive']['name_now']);
     }
 }

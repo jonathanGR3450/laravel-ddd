@@ -19,7 +19,7 @@ use App\Domain\Vinculation\ValueObjects\Email;
 use App\Domain\Vinculation\ValueObjects\Nit;
 use App\Domain\Vinculation\ValueObjects\Phone;
 use App\Domain\Vinculation\ValueObjects\TypePerson;
-use App\Infrastructure\Laravel\Models\Business as VinculationBusiness;
+use App\Infrastructure\Laravel\Models\Business as ModelBusiness;
 use App\Infrastructure\Laravel\Models\BusinessUser;
 use Exception;
 
@@ -28,7 +28,7 @@ class BusinessRepository implements BusinessRepositoryInterface
 
     public function create(Business $business): void
     {
-        $userModel = new VinculationBusiness();
+        $userModel = new ModelBusiness();
 
         $userModel->id = $business->id()->value();
         $userModel->business_name = $business->businessName()->value();
@@ -59,7 +59,7 @@ class BusinessRepository implements BusinessRepositoryInterface
 
     public function findById(Id $id): Business
     {
-        $businessModel = VinculationBusiness::find($id->value());
+        $businessModel = ModelBusiness::find($id->value());
 
         if (empty($businessModel)) {
             throw new Exception('business does not exist');
@@ -67,7 +67,7 @@ class BusinessRepository implements BusinessRepositoryInterface
         return self::map($businessModel);
     }
 
-    public static function map(VinculationBusiness $model): Business
+    public static function map(ModelBusiness $model): Business
     {
         return Business::create(
             Id::fromPrimitives($model->id),

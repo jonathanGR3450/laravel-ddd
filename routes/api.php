@@ -40,4 +40,5 @@ Route::middleware(['jwt.verify', 'user.business'])->group(function ()
 
     # vinculation
     Route::post('vinculations/file/upload', 'Vinculation\UploadFileSupplierController')->name('vinculation.upload');
+    Route::post('vinculation/approved/factor', 'Vinculation\UploadFileFactorOrFiduciaryController')->name('vinculation.approved.factor');
 });
