@@ -14,7 +14,7 @@ use App\Domain\Vinculation\ValueObjects\State;
 use App\Domain\Vinculation\ValueObjects\TypeProcessId;
 use App\Domain\Vinculation\ValueObjects\UserId;
 use App\Domain\Vinculation\VinculationRepositoryInterface;
-use App\Infrastructure\Laravel\Models\Vinculation\Process;
+use App\Infrastructure\Laravel\Models\Process;
 use Exception;
 
 class VinculationRepository implements VinculationRepositoryInterface

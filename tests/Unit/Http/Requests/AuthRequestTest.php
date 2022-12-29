@@ -3,7 +3,7 @@
 namespace Tests\Unit\Http\Requests;
 
 use App\Infrastructure\Laravel\Models\User;
-use App\Infrastructure\Laravel\Models\Vinculation\Business;
+use App\Infrastructure\Laravel\Models\Business;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\JsonResponse;
 use Tests\TestCase;

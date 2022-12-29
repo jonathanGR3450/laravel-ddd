@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Laravel\Models\Vinculation;
+namespace App\Infrastructure\Laravel\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

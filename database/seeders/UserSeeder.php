@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Domain\Shared\ValueObjects\UlidValueObject;
 use App\Infrastructure\Laravel\Models\TypeDocument;
 use App\Infrastructure\Laravel\Models\User;
-use App\Infrastructure\Laravel\Models\Vinculation\Business;
+use App\Infrastructure\Laravel\Models\Business;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;

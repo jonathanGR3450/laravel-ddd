@@ -3,9 +3,9 @@
 namespace Tests\Feature\Api\Auth;
 
 use App\Infrastructure\Laravel\Models\User;
-use App\Infrastructure\Laravel\Models\Vinculation\Business;
-use App\Infrastructure\Laravel\Models\Vinculation\BusinessUser;
-use App\Infrastructure\Laravel\Models\Vinculation\Process;
+use App\Infrastructure\Laravel\Models\Business;
+use App\Infrastructure\Laravel\Models\BusinessUser;
+use App\Infrastructure\Laravel\Models\Process;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;

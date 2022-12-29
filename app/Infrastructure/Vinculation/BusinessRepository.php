@@ -19,8 +19,8 @@ use App\Domain\Vinculation\ValueObjects\Email;
 use App\Domain\Vinculation\ValueObjects\Nit;
 use App\Domain\Vinculation\ValueObjects\Phone;
 use App\Domain\Vinculation\ValueObjects\TypePerson;
-use App\Infrastructure\Laravel\Models\Vinculation\Business as VinculationBusiness;
-use App\Infrastructure\Laravel\Models\Vinculation\BusinessUser;
+use App\Infrastructure\Laravel\Models\Business as VinculationBusiness;
+use App\Infrastructure\Laravel\Models\BusinessUser;
 use Exception;
 
 class BusinessRepository implements BusinessRepositoryInterface

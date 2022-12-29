@@ -1,9 +1,9 @@
 <?php
 
-namespace Database\Factories\Infrastructure\Laravel\Models\Vinculation;
+namespace Database\Factories\Infrastructure\Laravel\Models;
 
 use App\Domain\Shared\ValueObjects\Id;
-use App\Infrastructure\Laravel\Models\Vinculation\Business;
+use App\Infrastructure\Laravel\Models\Business;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

@@ -4,9 +4,9 @@ namespace Tests\Feature\Api\Vinculation;
 
 use App\Infrastructure\Laravel\Models\Document;
 use App\Infrastructure\Laravel\Models\User;
-use App\Infrastructure\Laravel\Models\Vinculation\Business;
-use App\Infrastructure\Laravel\Models\Vinculation\BusinessUser;
-use App\Infrastructure\Laravel\Models\Vinculation\Process;
+use App\Infrastructure\Laravel\Models\Business;
+use App\Infrastructure\Laravel\Models\BusinessUser;
+use App\Infrastructure\Laravel\Models\Process;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
@@ -105,5 +105,31 @@ class VinvulationTest extends TestCase
             'status' => 'error',
             'message' => 'Business not belog to user'
         ]);
+    }
+
+    /** @test */
+    public function approved_by_factor_user()
+    {
+        // $this->withHeader('Authorization', "Bearer {$this->token}");
+        // $comment = Comment::factory()->make();
+        // $data = [
+        //     'file' => $this->file,
+        //     'comment' => $comment->comment,
+        //     'business_id' => $this->business->id
+        // ];
+
+        // $response = $this->postJson(route('vinculation.approved.factor'), $data);
+
+        // $response->assertCreated();
+        // $response->assertJsonStructure([
+        //     'status',
+        //     'message',
+        //     'data'
+        // ]);
+
+        // $this->assertDatabaseHas(
+        //     'comments',
+        //     $comment->makeHidden(['id'])->toArray()
+        // );
     }
 }

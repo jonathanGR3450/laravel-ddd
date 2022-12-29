@@ -4,8 +4,8 @@ namespace App\Infrastructure\Laravel\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use App\Infrastructure\Laravel\Models\Vinculation\Business;
-use App\Infrastructure\Laravel\Models\Vinculation\Process;
+use App\Infrastructure\Laravel\Models\Business;
+use App\Infrastructure\Laravel\Models\Process;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;

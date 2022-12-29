@@ -1,17 +1,17 @@
 <?php
 
-namespace Database\Factories\Infrastructure\Laravel\Models\Vinculation;
+namespace Database\Factories\Infrastructure\Laravel\Models;
 
 use App\Domain\Shared\State\Pending;
 use App\Domain\Shared\ValueObjects\Id;
 use App\Infrastructure\Laravel\Models\TypeProcess;
 use App\Infrastructure\Laravel\Models\User;
-use App\Infrastructure\Laravel\Models\Vinculation\Business;
-use App\Infrastructure\Laravel\Models\Vinculation\Process;
+use App\Infrastructure\Laravel\Models\Business;
+use App\Infrastructure\Laravel\Models\Process;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Infrastructure\Laravel\Models\Vinculation\Process>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Infrastructure\Laravel\Models\Process>
  */
 class ProcessFactory extends Factory
 {

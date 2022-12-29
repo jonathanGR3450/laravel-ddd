@@ -3,8 +3,8 @@
 namespace Tests\Feature\Api\Auth;
 
 use App\Infrastructure\Laravel\Models\User;
-use App\Infrastructure\Laravel\Models\Vinculation\Business;
-use App\Infrastructure\Laravel\Models\Vinculation\BusinessUser;
+use App\Infrastructure\Laravel\Models\Business;
+use App\Infrastructure\Laravel\Models\BusinessUser;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Auth;
@@ -34,7 +34,6 @@ class UserTest extends TestCase
         $this->withHeader('Authorization', "Bearer {$this->token}");
 
         $response = $this->postJson(route('logout'));
-        $response->assertSessionMissing('business_id');
 
         $response->assertExactJson([
             'status' => 'success',
@@ -61,7 +60,6 @@ class UserTest extends TestCase
         $this->withHeader('Authorization', "Bearer {$token}");
 
         $response = $this->postJson(route('logout'));
-        $response->assertSessionMissing('business_id');
 
         $response->assertExactJson([
             'status' => 'success',

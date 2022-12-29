@@ -39,5 +39,5 @@ Route::middleware(['jwt.verify', 'user.business'])->group(function ()
     Route::get('users', 'User\IndexUserController')->name('users.index');
 
     # vinculation
-    Route::post('vinculations/file/upload', 'Vinculation\UploadFileController')->name('vinculation.upload');
+    Route::post('vinculations/file/upload', 'Vinculation\UploadFileSupplierController')->name('vinculation.upload');
 });

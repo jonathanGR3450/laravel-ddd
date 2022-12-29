@@ -1,12 +1,12 @@
 <?php
 
-namespace Database\Factories\Infrastructure\Laravel\Models\Vinculation;
+namespace Database\Factories\Infrastructure\Laravel\Models;
 
 use App\Domain\Shared\ValueObjects\Id;
 use App\Infrastructure\Laravel\Models\TypeDocument;
 use App\Infrastructure\Laravel\Models\User;
-use App\Infrastructure\Laravel\Models\Vinculation\Business;
-use App\Infrastructure\Laravel\Models\Vinculation\BusinessUser;
+use App\Infrastructure\Laravel\Models\Business;
+use App\Infrastructure\Laravel\Models\BusinessUser;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;

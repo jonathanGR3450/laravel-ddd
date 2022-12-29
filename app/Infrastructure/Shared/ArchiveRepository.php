@@ -14,7 +14,7 @@ use App\Domain\Shared\ValueObjects\Archive\ProcessId;
 use App\Domain\Shared\ValueObjects\Archive\TypeArchive;
 use App\Domain\Shared\ValueObjects\DateTimeValueObject;
 use App\Domain\Shared\ValueObjects\Id;
-use App\Infrastructure\Laravel\Models\Vinculation\Archive as VinculationArchive;
+use App\Infrastructure\Laravel\Models\Archive as VinculationArchive;
 
 class ArchiveRepository implements ArchiveRepositoryInterface
 {

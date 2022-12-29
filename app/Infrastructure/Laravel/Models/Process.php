@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Laravel\Models\Vinculation;
+namespace App\Infrastructure\Laravel\Models;
 
 use App\Domain\Shared\State\ProcessState;
 use App\Infrastructure\Laravel\Models\TypeProcess;

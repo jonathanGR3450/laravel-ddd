@@ -8,8 +8,8 @@ use App\Domain\Shared\DocumentRepositoryInterface;
 use App\Domain\Shared\ValueObjects\Id;
 use App\Infrastructure\Laravel\Controller;
 use App\Infrastructure\Laravel\Models\Document;
-use App\Infrastructure\Laravel\Models\Vinculation\Archive;
-use App\Infrastructure\Laravel\Models\Vinculation\Process;
+use App\Infrastructure\Laravel\Models\Archive;
+use App\Infrastructure\Laravel\Models\Process;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Http\JsonResponse;
@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
-class UploadFileController extends Controller
+class UploadFileSupplierController extends Controller
 {
     private AuthUserInterface $authUserInterface;
     private CreateArchiveUseCase $createArchiveUseCase;
@@ -36,6 +36,7 @@ class UploadFileController extends Controller
         // create file
         try {
             $path = 'documents/';
+            $typeProcess = 'vinculacion';
             $archive = $this->createArchiveUseCase->__invoke(
                 $request->document_id,
                 $request->file->getClientMimeType(),
@@ -43,7 +44,8 @@ class UploadFileController extends Controller
                 $request->file->getClientOriginalName(),
                 $request->file->getClientOriginalExtension(),
                 $request->business_id,
-                $request->file
+                $request->file,
+                $typeProcess
             );
 
             return Response::json([

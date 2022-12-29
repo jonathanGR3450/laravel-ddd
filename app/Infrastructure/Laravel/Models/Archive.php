@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Laravel\Models\Vinculation;
+namespace App\Infrastructure\Laravel\Models;
 
 use App\Infrastructure\Laravel\Models\Document;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;

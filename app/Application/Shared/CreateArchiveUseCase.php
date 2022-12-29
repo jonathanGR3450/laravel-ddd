@@ -51,10 +51,11 @@ final class CreateArchiveUseCase
         string $name_previous,
         string $extension,
         string $business_id,
-        \Illuminate\Http\UploadedFile $file
+        \Illuminate\Http\UploadedFile $file,
+        string $typeProcess,
     ): Archive
     {
-        $typeProcess = $this->typeProcessRepositoryInterface->findByName('vinculacion');
+        $typeProcess = $this->typeProcessRepositoryInterface->findByName($typeProcess);
         $document = $this->documentRepositoryInterface->findById(Id::fromPrimitives($document_id));
         $business = $this->authUserInterface->getBusinessById($business_id);
         $name_now = Archive::generateName($document, $business, $extension);
