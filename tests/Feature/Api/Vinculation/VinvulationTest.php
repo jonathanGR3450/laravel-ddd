@@ -5,6 +5,7 @@ namespace Tests\Feature\Api\Vinculation;
 use App\Infrastructure\Laravel\Models\Document;
 use App\Infrastructure\Laravel\Models\User;
 use App\Infrastructure\Laravel\Models\Vinculation\Business;
+use App\Infrastructure\Laravel\Models\Vinculation\BusinessUser;
 use App\Infrastructure\Laravel\Models\Vinculation\Process;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -23,6 +24,7 @@ class VinvulationTest extends TestCase
     private $vinculation;
     private $document;
     private $file;
+    private $password;
 
     public function setUp(): void
     {
@@ -30,13 +32,20 @@ class VinvulationTest extends TestCase
         $this->seed();
 
         # make user, business, relationship and vinculation prosess
+        $this->password = 'Lol123Lol@';
         $this->user = User::factory()->create();
         $this->business = Business::factory()->create();
         $this->vinculation = Process::factory()->create(['user_id' => $this->user->id, 'business_id' => $this->business->id]);
+        BusinessUser::factory()->create(['user_id' => $this->user->id, 'business_id' => $this->business->id]);
 
-        $this->token = JWTAuth::fromUser($this->user);
+        $credentials = [
+            'email' => $this->user->email,
+            'password' => $this->password,
+            'business_id' => $this->business->id
+        ];
 
-        Session::put('business_id', $this->business->id);
+        $response = $this->postJson(route('login'), $credentials);
+        $this->token = $response['authorization']['token'];
 
         // documents avilable to vinculation process
         // "'cedula', 'camaracomercio', 'rut', 'declaracionrenta', 'estadosfinancieros', 'certificacionbancaria', 'composicionaccionaria'"
@@ -54,7 +63,11 @@ class VinvulationTest extends TestCase
     public function upload_document()
     {
         $this->withHeader('Authorization', "Bearer {$this->token}");
-        $data = ['file' => $this->file, 'document_id' => $this->document->id];
+        $data = [
+            'file' => $this->file,
+            'document_id' => $this->document->id,
+            'business_id' => $this->business->id
+        ];
 
         $response = $this->postJson(route('vinculation.upload'), $data);
 
@@ -72,5 +85,25 @@ class VinvulationTest extends TestCase
         $response = $this->postJson(route('vinculation.upload'), $data);
 
         $response->assertUnauthorized();
+    }
+
+    /** @test */
+    public function upload_document_business_no_belog_to_user()
+    {
+        $business = Business::factory()->create();
+        $this->withHeader('Authorization', "Bearer {$this->token}");
+        $data = [
+            'file' => $this->file,
+            'document_id' => $this->document->id,
+            'business_id' => $business->id
+        ];
+
+        $response = $this->postJson(route('vinculation.upload'), $data);
+
+        $response->assertUnauthorized();
+        $response->assertExactJson([
+            'status' => 'error',
+            'message' => 'Business not belog to user'
+        ]);
     }
 }

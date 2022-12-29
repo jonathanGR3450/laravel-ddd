@@ -34,9 +34,7 @@ class UploadFileController extends Controller
     public function __invoke(Request $request)
     {
         // create file
-        dd(Auth::user());
         try {
-            $business = $this->authUserInterface->getBusinessSession();
             $path = 'documents/';
             $archive = $this->createArchiveUseCase->__invoke(
                 $request->document_id,
@@ -44,7 +42,7 @@ class UploadFileController extends Controller
                 $path,
                 $request->file->getClientOriginalName(),
                 $request->file->getClientOriginalExtension(),
-                $business,
+                $request->business_id,
                 $request->file
             );
 

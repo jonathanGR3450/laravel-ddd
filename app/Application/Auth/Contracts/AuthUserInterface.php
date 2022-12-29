@@ -36,11 +36,11 @@ interface AuthUserInterface
 
     public function getAuthUser(): \Illuminate\Contracts\Auth\Authenticatable;
 
+    public function getAuthUserAgreggate(): User|bool;
+
     public function getAuthenticatedUser(): \Illuminate\Contracts\Auth\Authenticatable;
 
-    public function userBelongToBusiness(ModelsUser $user, string $business_id): bool;
+    public function userBelongToBusiness(string $business_id): bool;
 
-    public function saveBusinessSession(string $business_id): void;
-
-    public function getBusinessSession(): Business;
+    public function getBusinessById(string $business_id): Business;
 }

@@ -57,6 +57,11 @@ final class AuthUser implements AuthUserInterface
         return Auth::user();
     }
 
+    public function getAuthUserAgreggate(): User|bool
+    {
+        return $this->userRepositoryInterface->getAuthUser();
+    }
+
     public function createUser(
         string $name,
         string $last_name,
@@ -122,19 +127,15 @@ final class AuthUser implements AuthUserInterface
         return $user;
     }
 
-    public function userBelongToBusiness(ModelsUser $user, string $business_id): bool
+    public function userBelongToBusiness(string $business_id): bool
     {
+        $user = self::getAuthUser();
         return $user->business->contains('id', $business_id);
     }
 
-    public function saveBusinessSession(string $business_id): void
+    public function getBusinessById(string $business_id): Business
     {
-        Session::put('business_id', $business_id);
-    }
-
-    public function getBusinessSession(): Business
-    {
-        $business = $this->businessRepositoryInterface->findById(Id::fromPrimitives((string) Session::get('business_id')));
+        $business = $this->businessRepositoryInterface->findById(Id::fromPrimitives($business_id));
         return $business;
     }
 }

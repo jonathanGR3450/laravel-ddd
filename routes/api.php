@@ -29,7 +29,7 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::post('user','Auth\AuthController@getAuthenticatedUser');
-Route::middleware(['jwt.verify'])->group(function ()
+Route::middleware(['jwt.verify', 'user.business'])->group(function ()
 {
 
     Route::post('users', 'User\CreateUserController')->name('users.store');

@@ -68,5 +68,6 @@ class Http extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'jwt.verify' => \App\Infrastructure\Laravel\Middleware\JwtMiddleware::class,
+        'user.business' => \App\Infrastructure\Laravel\Middleware\BusinessAuthMiddleware::class,
     ];
 }

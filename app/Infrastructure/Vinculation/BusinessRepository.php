@@ -81,7 +81,7 @@ class BusinessRepository implements BusinessRepositoryInterface
             CityRegister::fromString($model->city_register),
             Email::fromString($model->email),
             DateTimeValueObject::fromPrimitives($model->created_at->__toString()),
-            !empty($model->expiration_date) ? DateTimeValueObject::fromPrimitives($model->expiration_date->__toString()) : null,
+            !empty($model->expiration_date) ? DateTimeValueObject::fromPrimitives($model->expiration_date) : null,
             !empty($model->updated_at) ? DateTimeValueObject::fromPrimitives($model->updated_at->__toString()) : null,
         );
     }

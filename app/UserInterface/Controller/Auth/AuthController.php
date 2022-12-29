@@ -26,17 +26,18 @@ class AuthController extends Controller
     {
         try {
             $token = $this->authUserInterface->loginCredentials($request->input('email'), $request->input('password'));
-            $user = $this->authUserInterface->getAuthUser();
-            $userBelongToBusiness = $this->authUserInterface->userBelongToBusiness($user, $request->business_id);
+            $user = $this->authUserInterface->getAuthUserAgreggate();
+            $userBelongToBusiness = $this->authUserInterface->userBelongToBusiness($request->business_id);
 
             if (!$userBelongToBusiness) {
                 throw new Exception("La empresa seleccionada no pertenece al usuario", JsonResponse::HTTP_BAD_REQUEST);
             }
-            $this->authUserInterface->saveBusinessSession($request->business_id);
+            $business = $this->authUserInterface->getBusinessById($request->business_id);
             return response()->json([
                 'status' => 'success',
                 'message' => 'User logged successfully',
-                'user' => $user,
+                'user' => $user->asArray(),
+                'business' => $business->asArray(),
                 'authorization' => [
                     'token' => $token,
                     'type' => 'bearer',
@@ -103,6 +104,7 @@ class AuthController extends Controller
     public function logout()
     {
         $this->authUserInterface->logout();
+
         $this->authUserInterface->removeBusinessSession();
         return response()->json([
             'status' => 'success',

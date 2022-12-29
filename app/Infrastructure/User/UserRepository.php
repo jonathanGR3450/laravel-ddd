@@ -142,7 +142,7 @@ class UserRepository implements UserRepositoryInterface
         if (!$user = Auth::user()) {
             return false;
         }
-        $this->map($user);
+        return $this->map($user);
     }
 
     public static function map(ModelsUser $model): User
@@ -154,7 +154,7 @@ class UserRepository implements UserRepositoryInterface
             Email::fromString($model->email),
             Identification::fromInteger($model->identification),
             TypeDocumentId::fromPrimitives($model->type_document_id),
-            CellPhone::fromInteger($model->cell_phone),
+            CellPhone::fromInteger((int)$model->cell_phone),
             City::fromString($model->city),
             Address::fromString($model->address),
             CityRegister::fromString($model->city_register),

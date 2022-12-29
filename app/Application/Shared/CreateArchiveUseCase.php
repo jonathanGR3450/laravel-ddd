@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Shared;
 
+use App\Application\Auth\Contracts\AuthUserInterface;
 use App\Domain\Shared\Aggregate\Archive;
 use App\Domain\Shared\Aggregate\Document;
 use App\Domain\Shared\ArchiveRepositoryInterface;
@@ -27,17 +28,20 @@ final class CreateArchiveUseCase
     private TypeProcessRepositoryInterface $typeProcessRepositoryInterface;
     private DocumentRepositoryInterface $documentRepositoryInterface;
     private VinculationRepositoryInterface $vinculationRepositoryInterface;
+    private AuthUserInterface $authUserInterface;
 
     public function __construct(
             ArchiveRepositoryInterface $archiveRepositoryInterface,
             TypeProcessRepositoryInterface $typeProcessRepositoryInterface,
             DocumentRepositoryInterface $documentRepositoryInterface,
             VinculationRepositoryInterface $vinculationRepositoryInterface,
+            AuthUserInterface $authUserInterface,
         ) {
         $this->archiveRepositoryInterface = $archiveRepositoryInterface;
         $this->typeProcessRepositoryInterface = $typeProcessRepositoryInterface;
         $this->documentRepositoryInterface = $documentRepositoryInterface;
         $this->vinculationRepositoryInterface = $vinculationRepositoryInterface;
+        $this->authUserInterface = $authUserInterface;
     }
 
     public function __invoke(
@@ -46,12 +50,13 @@ final class CreateArchiveUseCase
         string $path,
         string $name_previous,
         string $extension,
-        Business $business,
+        string $business_id,
         \Illuminate\Http\UploadedFile $file
     ): Archive
     {
         $typeProcess = $this->typeProcessRepositoryInterface->findByName('vinculacion');
         $document = $this->documentRepositoryInterface->findById(Id::fromPrimitives($document_id));
+        $business = $this->authUserInterface->getBusinessById($business_id);
         $name_now = Archive::generateName($document, $business, $extension);
         $vinculation = $this->vinculationRepositoryInterface->findByBusinessTypeProcess($typeProcess, $business);
 

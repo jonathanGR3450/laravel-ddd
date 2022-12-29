@@ -91,10 +91,10 @@ class UserPublicTest extends TestCase
         ];
 
         $response = $this->postJson(route('login'), $credentials);
+        $response->json();
 
-        $response->assertSessionHas('business_id', $this->business->id);
         $response->assertStatus(200)
-            ->assertJsonStructure(['status', 'message', 'user', 'authorization']);
+            ->assertJsonStructure(['status', 'message', 'user', 'business', 'authorization']);
         $this->assertTrue(Auth::check());
     }
 
